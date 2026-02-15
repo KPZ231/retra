@@ -1,98 +1,239 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { Colors } from "@/constants/theme";
+import { Image } from "expo-image";
+import { Link } from "expo-router";
+import {
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header Section */}
+        <View style={styles.headerContainer}>
+          <Text style={styles.brandText}>RETRA</Text>
+          <Text style={styles.titleText}>Create</Text>
+          <Text style={styles.titleText}>memories.</Text>
+          <Text style={[styles.titleText, styles.italicText]}>
+            Intentionally.
+          </Text>
+        </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        {/* Polaroid Images Section */}
+        <View style={styles.imagesContainer}>
+          {/* Background Image (Mountains) */}
+          <View style={[styles.polaroid, styles.polaroidBack]}>
+            <Image
+              source={{
+                uri: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=500&auto=format&fit=crop",
+              }}
+              style={styles.image}
+              contentFit="cover"
+              transition={500}
+            />
+          </View>
+
+          {/* Foreground Image (Forest) */}
+          <View style={[styles.polaroid, styles.polaroidFront]}>
+            <Image
+              source={{
+                uri: "https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=500&auto=format&fit=crop",
+              }}
+              style={styles.image}
+              contentFit="cover"
+              transition={500}
+            />
+            {/* Fake text line on polaroid */}
+            <View style={styles.fakeTextLine} />
+          </View>
+        </View>
+
+        {/* Footer Section */}
+        <View style={styles.footerContainer}>
+          {/* Pagination Dots */}
+          <View style={styles.dotsContainer}>
+            <View style={[styles.dot, styles.dotActive]} />
+            <View style={styles.dot} />
+            <View style={styles.dot} />
+            <View style={styles.dot} />
+          </View>
+
+          {/* Action Button */}
+          <Link href="/(tabs)/explore" asChild>
+            <TouchableOpacity style={styles.button} activeOpacity={0.9}>
+              <Text style={styles.buttonText}>Start your journey</Text>
+              <IconSymbol
+                name="arrow.right"
+                size={20}
+                color={Colors.light.card}
+              />
+            </TouchableOpacity>
+          </Link>
+
+          {/* Login Link */}
+          <View style={styles.loginContainer}>
+            <Text style={styles.loginText}>Already have an account? </Text>
+            <Link href="/modal" asChild>
+              <TouchableOpacity>
+                <Text style={styles.loginLink}>Log in</Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: Colors.light.background,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 20,
+    paddingHorizontal: 24,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  headerContainer: {
+    alignItems: "center",
+    marginTop: 16,
+    width: "100%",
+  },
+  brandText: {
+    color: Colors.light.primary,
+    letterSpacing: 2.4, // tracking-[0.2em] approx
+    fontWeight: "600",
+    fontSize: 12,
+    marginBottom: 24,
+    textTransform: "uppercase",
+  },
+  titleText: {
+    color: Colors.light.text,
+    fontSize: 42,
+    fontFamily: Platform.select({ ios: "System", android: "sans-serif" }),
+    fontWeight: "400",
+    textAlign: "center",
+    lineHeight: 46, // leading-tight
+    letterSpacing: -0.5, // tracking-tight
+  },
+  italicText: {
+    color: Colors.light.primary,
+    fontWeight: "500",
+    fontStyle: "italic",
+    fontFamily: Platform.select({ ios: "Georgia-Italic", android: "serif" }),
+  },
+  imagesContainer: {
+    position: "relative",
+    width: "100%",
+    height: 380,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: -16,
+  },
+  polaroid: {
+    position: "absolute",
+    backgroundColor: Colors.light.card,
+    padding: 8,
+    paddingBottom: 32,
+    borderRadius: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  polaroidBack: {
+    transform: [{ rotate: "8deg" }, { translateX: 30 }, { translateY: -10 }],
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    zIndex: 1,
+  },
+  polaroidFront: {
+    transform: [{ rotate: "-4deg" }, { translateX: -20 }, { translateY: 20 }],
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    zIndex: 2,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
+  },
+  image: {
+    width: 220,
+    height: 280,
+    borderRadius: 2,
+  },
+  fakeTextLine: {
+    position: "absolute",
+    bottom: 16,
+    left: 12,
+    height: 4,
+    width: 96,
+    backgroundColor: Colors.light.inputBackground,
+    borderRadius: 9999,
+  },
+  footerContainer: {
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  dotsContainer: {
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 32,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Colors.light.border,
+  },
+  dotActive: {
+    backgroundColor: Colors.light.primary,
+  },
+  button: {
+    backgroundColor: Colors.light.primary,
+    width: "100%",
+    paddingVertical: 16,
+    borderRadius: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: Colors.light.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  buttonText: {
+    color: Colors.light.card,
+    fontSize: 18,
+    fontWeight: "600",
+    marginRight: 8,
+    letterSpacing: 0.5,
+  },
+  loginContainer: {
+    flexDirection: "row",
+    marginTop: 24,
+  },
+  loginText: {
+    color: Colors.light.textSecondary,
+    fontSize: 16,
+  },
+  loginLink: {
+    color: Colors.light.text,
+    fontWeight: "600",
+    fontSize: 16,
   },
 });
