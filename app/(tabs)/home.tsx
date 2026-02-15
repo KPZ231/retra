@@ -1,6 +1,10 @@
+import { Avatar } from "@/components/ui/Avatar";
+import { Badge } from "@/components/ui/Badge";
+import { ChecklistItem } from "@/components/ui/ChecklistItem";
+import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Colors } from "@/constants/theme";
-import { Image } from "expo-image";
 import { useState } from "react";
 import {
     FlatList,
@@ -114,25 +118,20 @@ export default function HomeScreen() {
               <Text style={styles.nameText}>Alex</Text>
             </Text>
           </View>
-          <View style={styles.avatarContainer}>
-            <Image
-              source={{
-                uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100&auto=format&fit=crop",
-              }}
-              style={styles.avatar}
-              contentFit="cover"
-            />
-            {/* Online status indicator */}
-            <View style={styles.statusDot} />
-          </View>
+
+          <Avatar
+            source={{
+              uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100&auto=format&fit=crop",
+            }}
+            showStatus
+            statusColor={Colors.light.primary}
+          />
         </View>
 
         {/* Main Card */}
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{currentSet.badge}</Text>
-            </View>
+            <Badge text={currentSet.badge} />
             {/* Decorative Plant Icon */}
             <IconSymbol
               name="leaf.fill"
@@ -145,43 +144,25 @@ export default function HomeScreen() {
           <Text style={styles.cardTitle}>{currentSet.title}</Text>
 
           {/* Progress Section */}
-          <View style={styles.progressContainer}>
-            <View style={styles.progressLabelRow}>
-              <Text style={styles.progressLabel}>Progress</Text>
-              <Text style={styles.progressValue}>{currentSet.progress}%</Text>
-            </View>
-            <View style={styles.progressBarTrack}>
-              <View
-                style={[
-                  styles.progressBarFill,
-                  { width: `${currentSet.progress}%` },
-                ]}
-              />
-            </View>
-          </View>
+          <ProgressBar
+            progress={currentSet.progress}
+            showValue
+            label="Progress"
+            style={{ marginBottom: 32 }}
+          />
 
           {/* Checklist Items */}
           <View style={styles.checklistContainer}>
             {currentSet.tasks.map((task) => (
-              <View key={task.id} style={styles.checkItem}>
-                <IconSymbol
-                  name={task.completed ? "checkmark.circle.fill" : "circle"}
-                  size={24}
-                  color={
-                    task.completed
-                      ? Colors.light.primary
-                      : Colors.light.textSecondary
-                  }
-                />
-                <Text
-                  style={[
-                    styles.checkText,
-                    task.completed && styles.strikethrough,
-                  ]}
-                >
-                  {task.text}
-                </Text>
-              </View>
+              <ChecklistItem
+                key={task.id}
+                text={task.text}
+                completed={task.completed}
+                onToggle={() => {
+                  // In a real app, toggle logic here
+                  console.log("Toggle task", task.id);
+                }}
+              />
             ))}
           </View>
         </View>
@@ -194,9 +175,10 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Floating Action Button */}
-      <TouchableOpacity style={styles.fab} activeOpacity={0.8}>
-        <IconSymbol name="plus" size={32} color={Colors.light.text} />
-      </TouchableOpacity>
+      <FloatingActionButton
+        style={styles.fab}
+        onPress={() => console.log("FAB pressed")}
+      />
 
       {/* Dropdown Modal */}
       <Modal
@@ -284,27 +266,6 @@ const styles = StyleSheet.create({
   nameText: {
     color: Colors.light.primary, // Gold
   },
-  avatarContainer: {
-    position: "relative",
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 2,
-    borderColor: "#FFFFFF",
-  },
-  statusDot: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: Colors.light.primary, // Gold status dot matching theme
-    borderWidth: 2,
-    borderColor: "#FFFFFF",
-  },
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 32,
@@ -324,17 +285,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginBottom: 16,
   },
-  badge: {
-    backgroundColor: "#FEF3C7", // amber-100
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 999,
-  },
-  badgeText: {
-    color: Colors.light.primary, // Gold text
-    fontWeight: "600",
-    fontSize: 12,
-  },
   plantIcon: {
     position: "absolute",
     right: -10,
@@ -349,52 +299,8 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     lineHeight: 34,
   },
-  progressContainer: {
-    marginBottom: 32,
-  },
-  progressLabelRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
-  },
-  progressLabel: {
-    color: "#6B7280", // gray-500
-    fontWeight: "600",
-    fontSize: 14,
-  },
-  progressValue: {
-    color: Colors.light.success, // Green
-    fontWeight: "700",
-    fontSize: 14,
-  },
-  progressBarTrack: {
-    height: 12,
-    backgroundColor: "#E5E7EB", // gray-200
-    borderRadius: 6,
-    overflow: "hidden",
-  },
-  progressBarFill: {
-    backgroundColor: Colors.light.success, // Green fill
-    height: "100%",
-    borderRadius: 6,
-  },
   checklistContainer: {
-    gap: 20,
-  },
-  checkItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-  },
-  checkText: {
-    fontSize: 16,
-    color: "#374151", // gray-700
-    fontWeight: "500",
-    flex: 1,
-  },
-  strikethrough: {
-    textDecorationLine: "line-through",
-    color: "#9CA3AF", // gray-400
+    gap: 12, // Reduced gap since items have padding
   },
   quoteText: {
     fontStyle: "italic",
@@ -408,17 +314,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 30,
     right: 24,
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "#EADDCD", // Beige/Gold-ish FAB bg from image
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
   },
   modalOverlay: {
     flex: 1,
