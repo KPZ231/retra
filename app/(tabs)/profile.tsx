@@ -1,7 +1,8 @@
-import { StyleSheet } from "react-native";
+import { Polaroid } from "@/components/ui/Polaroid";
+import { StatsRow } from "@/components/ui/StatsRow";
 import { Colors, Fonts } from "@/constants/theme";
 import { Ionicons } from '@expo/vector-icons';
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ProfileScreen() {
   return (
@@ -29,20 +30,11 @@ export default function ProfileScreen() {
       </View>
 
       {/* Stats */}
-      <View style={styles.statsRow}>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>128</Text>
-          <Text style={styles.statLabel}>MEMORIES</Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>12</Text>
-          <Text style={styles.statLabel}>CHALLENGES</Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>4</Text>
-          <Text style={styles.statLabel}>YEARS</Text>
-        </View>
-      </View>
+      <StatsRow stats={[
+        { value: 128, label: 'MEMORIES' },
+        { value: 12, label: 'CHALLENGES' },
+        { value: 4, label: 'YEARS' },
+      ]} />
 
       {/* My Collection */}
       <View style={styles.collectionSection}>
@@ -53,24 +45,28 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.collectionGrid}>
-          <View style={styles.polaroid}>
-            <Image source={{uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80'}} style={styles.polaroidImage} />
-            <Text style={styles.polaroidCaption}>Summer '22</Text>
-          </View>
-          <View style={styles.polaroid}>
-            <Image source={{uri: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80'}} style={styles.polaroidImage} />
-            <Text style={styles.polaroidCaption}>Morning Walk</Text>
-          </View>
+          <Polaroid
+            imageUri="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+            caption="Summer '22"
+            tilt="left"
+          />
+          <Polaroid
+            imageUri="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
+            caption="Morning Walk"
+            tilt="right"
+          />
         </View>
         <View style={styles.collectionGrid}>
-          <View style={styles.polaroid}>
-            <Image source={{uri: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'}} style={styles.polaroidImage} />
-            <Text style={styles.polaroidCaption}>The Coast</Text>
-          </View>
-          <View style={styles.polaroid}>
-            <Image source={{uri: 'https://images.unsplash.com/photo-1444065381814-865dc9da92c0?auto=format&fit=crop&w=400&q=80'}} style={styles.polaroidImage} />
-            <Text style={styles.polaroidCaption}>Highlands</Text>
-          </View>
+          <Polaroid
+            imageUri="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80"
+            caption="The Coast"
+            tilt="left"
+          />
+          <Polaroid
+            imageUri="https://images.unsplash.com/photo-1444065381814-865dc9da92c0?auto=format&fit=crop&w=400&q=80"
+            caption="Highlands"
+            tilt="right"
+          />
         </View>
       </View>
 
@@ -153,37 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     letterSpacing: 1,
   },
-  statsRow: {
-    flexDirection: 'row',
-    backgroundColor: '#F9F6F1',
-    borderRadius: 18,
-    marginHorizontal: 16,
-    marginBottom: 24,
-    paddingVertical: 16,
-    justifyContent: 'space-around',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
-    elevation: 1,
-  },
-  statBox: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  statNumber: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#222',
-    marginBottom: 2,
-    fontFamily: Fonts.rounded,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#B6A16B',
-    fontWeight: '600',
-    letterSpacing: 1,
-  },
+  // ...existing code...
   collectionSection: {
     marginHorizontal: 16,
     marginBottom: 24,
@@ -211,30 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 12,
   },
-  polaroid: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 8,
-    alignItems: 'center',
-    width: '48%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 1,
-  },
-  polaroidImage: {
-    width: '100%',
-    height: 250,
-    borderRadius: 8,
-    marginBottom: 6,
-  },
-  polaroidCaption: {
-    fontSize: 13,
-    color: '#7C6F57',
-    fontStyle: 'italic',
-    fontWeight: '500',
-  },
+  // ...existing code...
   menuSection: {
     marginHorizontal: 8,
     marginTop: 8,
