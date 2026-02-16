@@ -2,16 +2,23 @@ import { Polaroid } from "@/components/ui/Polaroid";
 import { StatsRow } from "@/components/ui/StatsRow";
 import { Colors, Fonts } from "@/constants/theme";
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ProfileScreen() {
+  const router = useRouter();
   return (
     <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: 32}}>
       {/* Header */}
       <View style={styles.headerRow}>
-        <View style={{ flex: 1 }} />
-        <Text style={styles.headerTitle}>PROFILE</Text>
-        <View style={{ flex: 1 }} />
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton} hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
+          <Ionicons name="arrow-back" size={24} color="#B6A16B" />
+        </TouchableOpacity>
+          <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+            <Text style={styles.headerTitle}>PROFILE</Text>
+          </View>
+          {/* Invisible placeholder for symmetry */}
+          <View style={{ width: 32 }} />
       </View>
 
       {/* Avatar and Name */}
@@ -104,6 +111,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 24,
     marginBottom: 8,
+      position: 'relative',
+    },
+  backButton: {
+      padding: 4,
+      width: 32,
+      alignItems: 'flex-start',
+      justifyContent: 'center',
   },
   headerTitle: {
     fontFamily: Fonts.rounded,
@@ -112,8 +126,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     color: '#222',
     textAlign: 'center',
-    flex: 0,
-  },
+    },
   avatarSection: {
     alignItems: 'center',
     marginTop: 8,

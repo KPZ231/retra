@@ -5,16 +5,17 @@ import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Colors } from "@/constants/theme";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
-    FlatList,
-    Modal,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
+  FlatList,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -70,9 +71,11 @@ const TASK_SETS: TaskSet[] = [
   },
 ];
 
+
 export default function HomeScreen() {
   const [selectedSetId, setSelectedSetId] = useState<string>("weekend");
   const [modalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
 
   // In a real app with persistence, we would load from AsyncStorage here.
   // useEffect(() => { loadFromStorage() }, []);
@@ -119,13 +122,17 @@ export default function HomeScreen() {
             </Text>
           </View>
 
-          <Avatar
-            source={{
-              uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100&auto=format&fit=crop",
-            }}
-            showStatus
-            statusColor={Colors.light.primary}
-          />
+          <TouchableOpacity onPress={() => {
+            router.push('/profile');
+          }} activeOpacity={0.7}>
+            <Avatar
+              source={{
+                uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100&auto=format&fit=crop",
+              }}
+              showStatus
+              statusColor={Colors.light.primary}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* Main Card */}
