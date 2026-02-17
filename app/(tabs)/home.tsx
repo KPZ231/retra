@@ -5,16 +5,17 @@ import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Colors } from "@/constants/theme";
+import { router } from "expo-router";
 import { useState } from "react";
 import {
-    FlatList,
-    Modal,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
+  FlatList,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -125,6 +126,7 @@ export default function HomeScreen() {
             }}
             showStatus
             statusColor={Colors.light.primary}
+            onPress={() => router.push("/profile")}
           />
         </View>
 
@@ -177,7 +179,7 @@ export default function HomeScreen() {
       {/* Floating Action Button */}
       <FloatingActionButton
         style={styles.fab}
-        onPress={() => console.log("FAB pressed")}
+        onPress={() => router.push("/addnewmemory")}
       />
 
       {/* Dropdown Modal */}
