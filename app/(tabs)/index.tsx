@@ -268,11 +268,14 @@ export default function WelcomeScreen() {
 
           {/* Action Button */}
           <ThemedButton
-            title="Start your journey"
-            onPress={() => setShowAuthForm(true)}
-            icon="arrow.right"
-            style={styles.button}
-          />
+              title="Start your journey"
+              onPress={() => {
+                setIsLogin(false);
+                setShowAuthForm(true);
+              }}
+              icon="arrow.right"
+              style={styles.button}
+            />
 
           {/* Login Link */}
           <View style={styles.loginContainer}>
