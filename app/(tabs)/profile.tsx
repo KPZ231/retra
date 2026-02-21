@@ -1,12 +1,19 @@
+import { GearButton } from '@/components/ui/GearButton';
 import { Polaroid } from "@/components/ui/Polaroid";
+import { SettingsModal } from '@/components/ui/SettingsModal';
 import { StatsRow } from "@/components/ui/StatsRow";
 import { Colors, Fonts } from "@/constants/theme";
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const [settingsVisible, setSettingsVisible] = useState(false);
+  const [editName, setEditName] = useState("Alex");
+  const [tempName, setTempName] = useState(editName);
+  
   return (
     <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: 32}}>
       {/* Header */}
@@ -14,11 +21,10 @@ export default function ProfileScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton} hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
           <Ionicons name="arrow-back" size={24} color="#B6A16B" />
         </TouchableOpacity>
-          <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
-            <Text style={styles.headerTitle}>PROFILE</Text>
-          </View>
-          {/* Invisible placeholder for symmetry */}
-          <View style={{ width: 32 }} />
+        <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+          <Text style={styles.headerTitle}>PROFILE</Text>
+        </View>
+        <GearButton onPress={() => setSettingsVisible(true)} />
       </View>
 
       {/* Avatar and Name */}
@@ -29,7 +35,7 @@ export default function ProfileScreen() {
             style={styles.avatar}
           />
         </View>
-        <Text style={styles.name}>Alex</Text>
+        <Text style={styles.name}>{editName}</Text>
         <View style={styles.premiumRow}>
           <Ionicons name="star" size={16} color="#EAB308" style={{marginRight: 4}} />
           <Text style={styles.premiumText}>PREMIUM MEMBER</Text>
@@ -95,6 +101,20 @@ export default function ProfileScreen() {
           <Ionicons name="chevron-forward" size={18} color="#B6A16B" />
         </TouchableOpacity>
       </View>
+      <SettingsModal
+        visible={settingsVisible}
+        name={editName}
+        tempName={tempName}
+        setTempName={setTempName}
+        onCancel={() => {
+          setSettingsVisible(false);
+          setTempName(editName);
+        }}
+        onSave={() => {
+          setEditName(tempName);
+          setSettingsVisible(false);
+        }}
+      />
     </ScrollView>
   );
 }
@@ -220,3 +240,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
