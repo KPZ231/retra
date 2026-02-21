@@ -158,15 +158,24 @@ export default function HomeScreen() {
           {/* Checklist Items */}
           <View style={styles.checklistContainer}>
             {currentSet.tasks.map((task) => (
-              <ChecklistItem
-                key={task.id}
-                text={task.text}
-                completed={task.completed}
-                onToggle={() => {
-                  // In a real app, toggle logic here
-                  console.log("Toggle task", task.id);
-                }}
-              />
+              <View key={task.id} style={styles.taskRow}>
+                <ChecklistItem
+                  text={task.text}
+                  completed={task.completed}
+                  onToggle={() => {
+                    // In a real app, toggle logic here
+                    console.log("Toggle task", task.id);
+                  }}
+                />
+                <TouchableOpacity
+                  style={styles.uploadButton}
+                  onPress={() => router.push("./addnewmemory")}
+                >
+                  <Text style={styles.uploadButtonText}>
+                    Upload a photo (Required to mark as completed)
+                  </Text>
+                </TouchableOpacity>
+              </View>
             ))}
           </View>
         </View>
@@ -304,7 +313,27 @@ const styles = StyleSheet.create({
     lineHeight: 34,
   },
   checklistContainer: {
-    gap: 12, // Reduced gap since items have padding
+    gap: 12,
+  },
+  taskRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  uploadButton: {
+    backgroundColor: '#EAD9B6',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginLeft: 8,
+    alignSelf: 'flex-end',
+  },
+  uploadButtonText: {
+    color: '#8B7355',
+    fontSize: 13,
+    fontWeight: '600',
   },
   quoteText: {
     fontStyle: "italic",
